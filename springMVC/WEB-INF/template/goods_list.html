@@ -1,0 +1,91 @@
+<#import "/spring.ftl" as spring />
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>goodsList</title>
+
+<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+<meta http-equiv="description" content="this is my page">
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<script type="text/javascript"
+	src="<@spring.url ''/>/js/jquery-1.12.4.min.js"></script>
+</head>
+<style type="text/css"> 
+.imagetable {
+	font-family: verdana,arial,sans-serif;
+	font-size:11px;
+	color:#333333;
+	border-width: 1px;
+	border-color: #999999;
+	border-collapse: collapse;
+}
+.imagetable th {
+	background:#b5cfd2 url('<@spring.url ''/>/pic/css_images/cell-blue.jpg');
+	border-width: 1px;
+	padding: 8px;
+	border-style: solid;
+	border-color: #999999;
+}
+.imagetable td {
+	background:#dcddc0 url('<@spring.url ''/>/pic/css_images/cell-grey.jpg');
+	border-width: 1px;
+	padding: 8px;
+	border-style: solid;
+	border-color: #999999;
+}
+</style>
+<body>
+	<#if user??>
+	<a href="#">${user.userName}</a><br>
+	<a href="<@spring.url ''/>/cart/myCart">我的购物车</a><br>
+	</#if>
+	<table class="imagetable">
+		<tr>
+			<th>商品id</th>
+			<th>商品名</th>
+			<th>商品价格</th>
+			<th>商品图片</th>
+			<th>详情</th>
+			<th>数量</th>
+		</tr>
+		<#if goodsList??>
+		<#list goodsList as goods>
+		<tr>
+			<td>${goods.gid}</td>
+			<td>${goods.goodsname}</td>
+			<td>${goods.price}</td>
+			<td><img src="<@spring.url ''/>/pic/${goods.pic}" width="50px" height="50px"></img></td>
+			<td>
+				<a href="#">查看详情</a>
+				</td>
+				<td>
+				<input id="count-${goods.gid}" type="text" >
+				<button id="${goods.gid}" class="addToCart">添加到购物车</button>
+			</td>
+		</tr>
+		</#list>
+		</#if>
+	</table>
+	
+	<script type="text/javascript">
+	$(document).ready(
+		function() {
+			$('.addToCart').on('click', function(event) {
+				$.ajax({
+					type : "POST",
+					url : "<@spring.url ''/>/goodsMapper/addToCart",
+					data : {
+						gid : event.target.id,
+						count : $('#count-' + event.target.id).val()
+					},
+					dataType : 'json',
+					success : function(redata) {
+						debugger;
+						alert(redata);
+					}
+				});
+			});
+		}
+	)
+	</script>
+</body>

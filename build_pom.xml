@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:artifact="antlib:org.apache.maven.artifact.ant" basedir="." default="buildLib" name="antMaven">
+	<property file="${basedir}/build.properties" />
+	<property name="pom.filePath" value="${basedir}/pom.xml" />
+	<property name="maven-ant-tasks.lib" value="${basedir}/maven-ant/maven-ant-tasks-2.1.3.jar" />
+	<path id="maven-ant-tasks.classpath" path="${maven-ant-tasks.lib}" />
+	<typedef resource="org/apache/maven/artifact/ant/antlib.xml" uri="antlib:org.apache.maven.artifact.ant" classpathref="maven-ant-tasks.classpath" />
+	<artifact:pom id="projectPOM" file="${pom.filePath}" />
+	<artifact:dependencies pathid="runtime.classpath" filesetid="runtime.fileset" scopes="compile,runtime">
+		<pom refid="projectPOM" />
+	</artifact:dependencies>
+	<target name="buildLibDir" unless="libExists">
+		<mkdir dir="${runtimeLib.dir}" />
+	</target>
+	<target name="copyLibJar" depends="buildLibDir">
+		<delete dir="${runtimeLib.dir}" />
+		<copy todir="${runtimeLib.dir}">
+			<fileset refid="runtime.fileset" />
+			<mapper type="flatten" />
+		</copy>
+	</target>
+	<target name="buildLib">
+		<condition property="libExists">
+			<and>
+				<available file="${runtimeLib.dir}" type="dir" />
+			</and>
+		</condition>
+		<antcall target="copyLibJar" />
+	</target>
+</project>

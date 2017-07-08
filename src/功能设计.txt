@@ -1,0 +1,56 @@
+后台：
+      1）商品管理：（后台主页）
+          列表显示
+          添加（带图片）（图片保存成文件，文件名保存到数据库）
+          修改
+
+前台：
+      1）按分类查询商品(前台主页）
+          有注册、登录链接，登录后有查看购物车链接)
+          前台列表显示名称和图片价格等
+          商品详情（点击商品名称和图片都可进入）
+      2）用户注册
+      3）用户登录：
+           用户名为admin时认为就后台管理员，跳到商品管理页
+           其他用户跳到按分类查询商品页
+      
+      5）购物车（可选）
+         前台添加商品到购物车
+         列表显示购物车里商品名称（图片功能可选）、单价、底部有汇总价格
+         点击订购发个ajax请求，返回订购结果
+
+
+注册、登录
+商品展示
+添加商品到购物车
+
+
+数据表：
+create table user(id varchar(255) not null primary key, 
+	username varchar(31) not null unique, 
+	userpwd varchar(31) not null);
+	
+create table classification(cid varchar(255) not null primary key, 
+	classname varchar(31) not null unique);
+	
+create table goods(gid varchar(255) not null primary key, 
+	goodsname varchar(31) not null, 
+	price double not null, 
+	pic varchar(63), 
+	cid varchar(255) not null);
+	
+alter table goods add constraint `fk_g_c_1` foreign key (cid) references classification (cid);
+	
+create table cart (oid varchar(255) not null primary key,
+	 uid varchar(255) not null, 
+	 gid varchar(255) not null, 
+	 count int(15) not null,
+	 foreign key (uid) references user (id), 
+	 foreign key (gid) references goods (gid));
+
+ alter table order add constraint `fk_o_u_1` foreign key (uid) references user (id);
+ alter table order add constraint `fk_o_g_1` foreign key (gid) references goods (gid);
+ 
+
+
+

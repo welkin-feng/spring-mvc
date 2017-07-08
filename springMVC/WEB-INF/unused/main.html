@@ -1,0 +1,68 @@
+<#import "/spring.ftl" as spring />
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>main.html</title>
+
+<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+<meta http-equiv="description" content="this is my page">
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<script type="text/javascript" src="<@spring.url ''/>/js/jquery-1.12.4.min.js"></script>
+<!--<link rel="stylesheet" type="text/css" href="./styles.css">-->
+<script type="text/javascript">
+var userList;
+$(function(){
+	$("#ajaxBtn").on('click',function(){
+		$.ajax({
+			  type: "POST",
+			  url: "<@spring.url ''/>/user/ajax",
+			  data:{userName:'aa',userPwd:'bb'},
+			  dataType:'json',
+			  success: function(data){
+				  alert(data.userName);
+			  }
+		});
+	});
+	$("#mybatisBtn").on('click',function(){
+		$.ajax({
+			  type: "POST",
+			  url: "<@spring.url ''/>/userMapper/getUserById",
+			  data:{userId:'9cf34eb759e64b73a45e3d70d9fa7c87'},
+			  dataType:'json',
+			  success: function(data){
+				  debugger;
+				  //$("#id").val(data.id);
+				  //$("#userName").val(data.userName);
+				  //$("#userPwd").val(data.userPwd);
+				  alert(data.userName);
+			  }
+		});
+	});
+	$("#delBtn").on('click',function(){
+		$.ajax({
+			  type: "POST",
+			  url: "<@spring.url ''/>/userMapper/delUserById",
+			  data:{userId:'2'},
+			  dataType:'json',
+			  success: function(data){
+				  debugger;
+				  alert(data.userName);
+			  }
+		});
+	});
+});
+</script>
+</head>
+
+<body>
+	<#if currentUserName??>${currentUserName}登录成功</#if><br>
+	<a href="<@spring.url ''/>/">重新登录</a><br>
+	<a href="<@spring.url ''/>/user/getUser/111111">通过路径传参</a><br>
+	<button id="ajaxBtn">ajax请求</button>
+	<button id="mybatisBtn">mybatis请求</button>
+	<button id="delBtn">删除</button>
+	
+	
+	
+</body>
+</html>

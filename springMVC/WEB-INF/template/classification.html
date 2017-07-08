@@ -1,0 +1,50 @@
+<#import "/spring.ftl" as spring />
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>分类查询页</title>
+<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+<meta http-equiv="description" content="this is my page">
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<script type="text/javascript" src="<@spring.url ''/>/js/jquery-1.12.4.min.js"></script>
+<!--<link rel="stylesheet" type="text/css" href="./styles.css">-->
+</head>
+<body>
+	<#if user??>
+	<a href="#">${user.userName}</a><br>
+	<a href="<@spring.url ''/>/cart/myCart">我的购物车</a><br>
+	</#if>
+<!-- 	<table>
+	    <tr>
+	    	<td>商品类别</td>
+		</tr>
+		<#if classifyList??>
+		<#list classifyList as c>
+		<tr>
+			<td ><a href="<@spring.url ''/>/classifyMapper/getGoodsByClassId?cid=${c.cid}">${c.classname}</a></td>
+		</tr>
+		</#list>
+		</#if>
+	</table> -->
+		<table>
+	    <tr>
+	    	<td>商品类别</td>
+		</tr>
+		<tr>
+		<td>
+		<select onchange="window.location=this.value;">
+			<option>--     --</option>
+			<#if classifyList??>
+			<#list classifyList as c>
+			<option value="<@spring.url ''/>/classifyMapper/getGoodsByClassId?cid=${c.cid}">${c.classname}</option>
+			</#list>
+			</#if>
+		</select>
+		</td>
+		</tr>
+		
+
+	</table>
+</body>
+</html>
